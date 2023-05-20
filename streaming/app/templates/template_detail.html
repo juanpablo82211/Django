@@ -1,0 +1,66 @@
+{% extends 'bonito.html' %}
+{% load static %}
+
+{% block extra_content %}
+<style>
+    /* Estilos del contenedor de comentarios */
+    .comment-container {
+        background-color: white;
+        width: 60%;
+        overflow-y: auto; /* Agrega una barra de desplazamiento vertical cuando se supera el tamaño del contenedor */
+        height: 240px; /* Establece una altura fija para mostrar solo los 4 primeros comentarios */
+        margin: 27% -10% 0 10%; /* Margen izquierdo del 10% y margen superior del 10% */
+        padding: 10px; /* Agrega espacio interno al contenedor */
+        margin-top: 43%;
+    }
+
+    /* Estilos del botón de enviar */
+    .btn-send {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 10px;
+    }
+
+    comment-form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .video-container {
+            width: 80%;
+            max-width: 45%;
+            margin: 2% auto;
+            position: absolute;
+            
+        }
+   .container{
+    margin-top: -3%;
+   }
+</style>
+
+<div class="container ">
+    <div class="video-container">
+        <img src="{{imagen}}" alt="Video" style="width: 100%; height: auto;">
+    </div>
+</div>
+<!-- Contenedor de comentarios -->
+<div class="comment-container">
+    {% for comment in comments %}
+        <div>
+            <p>{{ comment.content }} {{ comment.user.username }} - {{ comment.timestamp }}</p>
+        </div>
+    {% empty %}
+        <p>No hay comentarios.</p>
+    {% endfor %}
+</div>
+
+<!-- Formulario de comentarios -->
+<form id="comment-form" action="{% url 'template_detail' video_number=video_number %}" method="post" style="margin-left: 10%;">
+    {% csrf_token %}
+    <div>
+        {{ form.content }}
+        <input type="submit" value="Enviar comentario" class="btn-send">
+    </div>
+</form>
+{% endblock %}
